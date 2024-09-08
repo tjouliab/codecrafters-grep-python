@@ -15,6 +15,9 @@ def match_pattern(input_line: str, pattern: str) -> bool:
         if pattern[pattern_index] == '\\':
             subpattern = pattern[pattern_index : pattern_index + 2]
             pattern_index += 2
+        elif pattern[pattern_index] == '[':
+            closing_bracket_index = pattern.index(']', pattern_index)
+            subpattern = pattern[pattern_index : closing_bracket_index + 1]
         else:
             subpattern = pattern[pattern_index]
             pattern_index += 1
