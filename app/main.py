@@ -21,7 +21,7 @@ def match_pattern_recursive(input_line: str, pattern: str) -> bool:
     elif pattern[0] == '^':
         return match_pattern_recursive(input_line, pattern[1:])
     else:
-        return pattern[0] == input_line[0] and match_pattern_recursive(input_line[1:], pattern[1:])
+        return pattern[0] == input_line[0] or match_pattern_recursive(input_line[1:], pattern[1:])
 
 def main():
     pattern = sys.argv[2]
