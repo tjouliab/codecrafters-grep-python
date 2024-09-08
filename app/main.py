@@ -2,14 +2,23 @@ import sys
 
 # import pyparsing - available if you need it!
 # import lark - available if you need it!
+
 ALL_NUMBERS = [f'{i}' for i in range(10)]
+ALL_LOWERCASE_LETTERS = [chr(i) for i in range(ord('a'), ord('z') + 1)]
+ALL_UPPERCASE_LETTERS = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+ALL_ALPHANUMERIC_CHARACTERS = ALL_NUMBERS + ALL_LOWERCASE_LETTERS + ALL_UPPERCASE_LETTERS
 
 def match_pattern(input_line, pattern):
     if len(pattern) == 1:
         return pattern in input_line
     elif pattern[:2] == '\\d':
-        for num in ALL_NUMBERS:
-            if num in input_line:
+        for input in input_line:
+            if input in ALL_NUMBERS:
+                return True
+        return False
+    elif pattern[:2] == '\\w':
+        for input in input_line:
+            if input in ALL_ALPHANUMERIC_CHARACTERS:
                 return True
         return False
     else:
