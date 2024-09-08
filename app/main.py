@@ -2,11 +2,16 @@ import sys
 
 # import pyparsing - available if you need it!
 # import lark - available if you need it!
-
+ALL_NUMBERS = [f'{i}' for i in range(10)]
 
 def match_pattern(input_line, pattern):
     if len(pattern) == 1:
         return pattern in input_line
+    elif pattern[:2] == '\\d':
+        for num in ALL_NUMBERS:
+            if num in input_line:
+                return True
+        return False
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
 
