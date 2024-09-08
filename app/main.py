@@ -25,6 +25,8 @@ def match_pattern_recursive(input_line: str, pattern: str) -> bool:
 def match_pattern(input_line: str, pattern: str) -> bool:
     if len(input_line) == 0:
         return False
+    if match_pattern(input_line, pattern):
+        return True
     return match_pattern(input_line[1:], pattern)
     
 
