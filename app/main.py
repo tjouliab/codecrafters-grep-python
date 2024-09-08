@@ -9,18 +9,31 @@ ALL_UPPERCASE_LETTERS = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 ALL_ALPHANUMERIC_CHARACTERS = ALL_NUMBERS + ALL_LOWERCASE_LETTERS + ALL_UPPERCASE_LETTERS
 
 def match_pattern(input_line: str, pattern: str) -> bool:
-    if len(pattern) == 1:
-        return pattern in input_line
-    elif pattern[:2] == '\\d':
+    pattern_index = 0
+    for input in input_line:
+        if pattern[pattern_index] == '\\':
+            subpattern = pattern[pattern_index : pattern_index + 2]
+            pattern_index += 2
+        else:
+            subpattern = pattern[pattern_index]
+            pattern_index += 1
+        if not match_subpattern(input, subpattern):
+            return False
+    return True
+
+def match_subpattern(input_line: str, subpattern: str) -> bool:
+    if len(subpattern) == 1:
+        return subpattern in input_line
+    elif subpattern[:2] == '\\d':
         return find_characters_in_input_line(input_line, ALL_NUMBERS)
-    elif pattern[:2] == '\\w':
+    elif subpattern[:2] == '\\w':
         return find_characters_in_input_line(input_line, ALL_ALPHANUMERIC_CHARACTERS)
-    elif pattern[0] == '[' and pattern[-1] == ']':
-        if pattern[1] == '^':
-            return not find_characters_in_input_line(input_line, pattern[2:-1])
-        return find_characters_in_input_line(input_line, pattern[1:-1])
+    elif subpattern[0] == '[' and subpattern[-1] == ']':
+        if subpattern[1] == '^':
+            return not find_characters_in_input_line(input_line, subpattern[2:-1])
+        return find_characters_in_input_line(input_line, subpattern[1:-1])
     else:
-        raise RuntimeError(f"Unhandled pattern: {pattern}")
+        raise RuntimeError(f"Unhandled subpattern: {subpattern}")
 
 
 def find_characters_in_input_line(input_line: str, characters: list[str]) -> bool:
