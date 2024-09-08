@@ -20,9 +20,16 @@ def match_pattern_recursive(input_line: str, pattern: str) -> bool:
         return input_line[0] in chars and match_pattern_recursive(input_line[1:], pattern[closing_bracket_index + 1:])
     elif pattern[0] == '^':
         return match_pattern_recursive(input_line, pattern[1:])
-    elif pattern[0] == input_line[0]:
-        return match_pattern_recursive(input_line[1:], pattern[1:])
-    return False
+    return pattern[0] == input_line[0] and match_pattern_recursive(input_line[1:], pattern[1:])
+
+def match_pattern(input_line: str, pattern: str) -> bool:
+    input_line_truncated = input_line
+    while not match_pattern_recursive(input_line_truncated, pattern):
+        input_line_truncated.pop(0)
+        if len(input_line_truncated) == 0:
+            return False
+    return True
+    
 
 def main():
     pattern = sys.argv[2]
@@ -36,7 +43,7 @@ def main():
     print("Logs from your program will appear here!")
 
     # Uncomment this block to pass the first stage
-    if match_pattern_recursive(input_line, pattern):
+    if match_pattern(input_line, pattern):
         exit(0)
     else:
         exit(1)
