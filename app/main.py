@@ -20,8 +20,10 @@ def match_pattern(input_line: str, pattern: str) -> bool:
             pattern_index += 1
         print('subpattern', subpattern)
         if not match_subpattern(input, subpattern):
-            return False
-    return True
+            pattern_index = 0
+        elif pattern_index + 1 == len(pattern):
+            return True
+    return False
 
 def match_subpattern(input_line: str, subpattern: str) -> bool:
     if len(subpattern) == 1:
