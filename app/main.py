@@ -21,7 +21,7 @@ def match_pattern(input_line: str, pattern: str) -> bool:
         print('subpattern', subpattern)
         if not match_subpattern(input, subpattern):
             pattern_index = 0
-        elif pattern_index + 1 == len(pattern):
+        elif pattern_index == len(pattern):
             return True
     return False
 
