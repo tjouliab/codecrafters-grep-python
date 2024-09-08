@@ -15,7 +15,9 @@ def match_pattern(input_line: str, pattern: str) -> bool:
         return find_characters_in_input_line(input_line, ALL_NUMBERS)
     elif pattern[:2] == '\\w':
         return find_characters_in_input_line(input_line, ALL_ALPHANUMERIC_CHARACTERS)
-    elif pattern[0] == '[':
+    elif pattern[0] == '[' and pattern[-1] == ']':
+        if pattern[1] == '^':
+            return not find_characters_in_input_line(input_line, pattern[2:-1])
         return find_characters_in_input_line(input_line, pattern[1:-1])
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
