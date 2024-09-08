@@ -4,6 +4,8 @@ import sys
 # import lark - available if you need it!
 
 def match_pattern_recursive(input_line: str, pattern: str) -> bool:
+    print('input_line', input_line)
+    print('pattern', pattern)
     if len(pattern) == 0:
         return True
     elif pattern[:2] == '\\d':
