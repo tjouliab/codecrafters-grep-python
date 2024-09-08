@@ -11,12 +11,14 @@ ALL_ALPHANUMERIC_CHARACTERS = ALL_NUMBERS + ALL_LOWERCASE_LETTERS + ALL_UPPERCAS
 def match_pattern(input_line: str, pattern: str) -> bool:
     pattern_index = 0
     for input in input_line:
+        print('input', input)
         if pattern[pattern_index] == '\\':
             subpattern = pattern[pattern_index : pattern_index + 2]
             pattern_index += 2
         else:
             subpattern = pattern[pattern_index]
             pattern_index += 1
+        print('subpattern', subpattern)
         if not match_subpattern(input, subpattern):
             return False
     return True
