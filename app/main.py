@@ -9,22 +9,16 @@ ALL_UPPERCASE_LETTERS = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 ALL_ALPHANUMERIC_CHARACTERS = ALL_NUMBERS + ALL_LOWERCASE_LETTERS + ALL_UPPERCASE_LETTERS
 
 def match_pattern(input_line: str, pattern: str) -> bool:
-    pattern_index = 0
+    subpatterns = extract_subpatterns(pattern)
+    print('subpatterns', subpatterns)
+    subpatterns_index = 0
     for input in input_line:
         print('input', input)
-        if pattern[pattern_index] == '\\':
-            subpattern = pattern[pattern_index : pattern_index + 2]
-            pattern_index += 2
-        elif pattern[pattern_index] == '[':
-            closing_bracket_index = pattern.index(']', pattern_index)
-            subpattern = pattern[pattern_index : closing_bracket_index + 1]
-        else:
-            subpattern = pattern[pattern_index]
-            pattern_index += 1
+        subpattern = subpatterns[subpatterns_index]
         print('subpattern', subpattern)
         if not match_subpattern(input, subpattern):
-            pattern_index = 0
-        elif pattern_index == len(pattern):
+            subpatterns_index = 0
+        elif subpatterns_index == len(subpatterns):
             return True
     return False
 
@@ -48,6 +42,29 @@ def find_characters_in_input_line(input_line: str, characters: list[str]) -> boo
         if input in characters:
             return True
     return False
+
+def extract_subpatterns(pattern: str) -> list[str]:
+    subpatterns: list[str] = []
+    pattern_blank_splitted = pattern.split(' ')
+    for blank_split in pattern_blank_splitted:
+        subpattern: list[str] = []
+        index = 0
+        while index < len(blank_split):
+            if blank_split[index] == '\\':
+                subpattern.append(blank_split[index : index + 2])
+                index += 2
+            elif blank_split[index] == '[':
+                closing_bracket_index = blank_split.index(']', index)
+                subpattern.append(blank_split[index : closing_bracket_index + 1])
+                index = closing_bracket_index + 1
+            else: 
+                subpattern.append(blank_split[index])
+                index += 1
+        if len(subpatterns) >= 1:
+            subpatterns += [' '] + subpattern
+        else:
+            subpatterns += subpattern
+    return subpatterns
 
 def main():
     pattern = sys.argv[2]
